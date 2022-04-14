@@ -32,11 +32,13 @@ function App() {
     },
     {
         "dateString": "Sun Mar 27 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Mon Mar 28 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Tue Mar 29 2022",
@@ -48,7 +50,8 @@ function App() {
     },
     {
         "dateString": "Thu Mar 31 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Fri Apr 01 2022",
@@ -56,15 +59,18 @@ function App() {
     },
     {
         "dateString": "Sat Apr 02 2022",
-        "moodRank": 57
+        "moodRank": 57,
+        "mj": true
     },
     {
         "dateString": "Sun Apr 03 2022",
-        "moodRank": 71
+        "moodRank": 71,
+        "mj": true
     },
     {
         "dateString": "Mon Apr 04 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Tue Apr 05 2022",
@@ -72,39 +78,51 @@ function App() {
     },
     {
         "dateString": "Wed Apr 06 2022",
-        "moodRank": 71
+        "moodRank": 71,
+        "mj": true
     },
     {
         "dateString": "Thu Apr 07 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Thu Apr 07 2022",
-        "moodRank": 57
+        "moodRank": 57,
+        "mj": true
     },
     {
         "dateString": "Fri Apr 08 2022",
-        "moodRank": 57
+        "moodRank": 57,
+        "mj": true
     },
     {
         "dateString": "Sat Apr 09 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Sun Apr 10 2022",
-        "moodRank": 43
+        "moodRank": 43,
+        "mj": true
     },
     {
         "dateString": "Mon Apr 11 2022",
         "moodRank": 71
-    }
+    },
+    {
+        "dateString": "Tue Apr 12 2022",
+        "moodRank": 71,
+    },
+    {
+        "dateString": "Tue Apr 13 2022",
+        "moodRank": 57,
+        "mj": true
+    },
 ]);
   const [range, setRange] = useState(0);
+  const [weed, setWeed] = useState(false);
   const dateData = [
     ...dateDataRaw,
     {
       dateString: date.toDateString(),
-      moodRank: range
+      moodRank: range,
+      mj: weed
     }
   ];
 
@@ -113,18 +131,17 @@ function App() {
       const dateStr = date.toDateString();
       const data = dateData.find(o => o.dateString == dateStr);
       if (data == undefined) return null;
-      const {moodRank} = data;
-      return <UnderneathTile mood={moodRank / 100} />
+      const {moodRank, mj} = data;
+      return <UnderneathTile mood={moodRank / 100} mj={mj} />
   }
-
-  const content = <div className="UnderneathTile"></div>;
 
   return (
     <div className="App">
       <Calendar tileContent={getBackground} className="Calendar" onChange={setDate} value={date} />
       <textarea></textarea>
       <input type="range" value={range} onChange={e => setRange(e.target.value)} /> <br />
-      <div style={{display: "flex", justifyContent: "flex-end"}}>
+      <div style={{display: "flex", justifyContent: "space-between", padding: "1rem"}}>
+        <div className={weed ? "mj-check checked" : "mj-check"} onClick={() => setWeed(!weed)}></div>
         <button style={{fontSize: "1.5rem", padding: "0.3rem 1rem"}}> save </button>
       </div>
     </div>
@@ -132,9 +149,11 @@ function App() {
 }
 
 function UnderneathTile(props) {
-  const {mood} = props;
+  const {mood, mj} = props;
   function calcColor() {
-    const range = [[255, 111], [255, 0], [255, 255]]; //rgb start - end
+    const start = [255, 255, 255];
+    const end = [111, 0, 255]
+    const range = start.map((s, i) => [s, end[i]]); //rgb start - end
     function moodpoint([a, b]) {
       if (a == b) return a;
       const subtract = a > b;
@@ -147,7 +166,7 @@ function UnderneathTile(props) {
   }
   return (
     <div className="UnderneathTile" style={{backgroundColor: calcColor()}}>
-
+      {mj ? <div className="mj-leaf"></div> : ""}
     </div>
   )
 }
