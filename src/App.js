@@ -1,120 +1,24 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import DBHandler from "./DBHandler.js";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
+const db = new DBHandler();
+const reduce_cn = obj => Object.entries(obj).filter(([key, val]) => val).map(([key]) => key).join(" ");
+
 function App() {
   const [date, setDate] = useState(new Date());
-  const [dateDataRaw, setDateData] = useState([
-    {
-        "dateString": "Mon Mar 21 2022",
-        "moodRank": 29
-    },
-    {
-        "dateString": "Tue Mar 22 2022",
-        "moodRank": 43
-    },
-    {
-        "dateString": "Wed Mar 23 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Thu Mar 24 2022",
-        "moodRank": 71
-    },
-    {
-        "dateString": "Fri Mar 25 2022",
-        "moodRank": 71
-    },
-    {
-        "dateString": "Sat Mar 26 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Sun Mar 27 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Mon Mar 28 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Tue Mar 29 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Wed Mar 30 2022",
-        "moodRank": 43
-    },
-    {
-        "dateString": "Thu Mar 31 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Fri Apr 01 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Sat Apr 02 2022",
-        "moodRank": 57,
-        "mj": true
-    },
-    {
-        "dateString": "Sun Apr 03 2022",
-        "moodRank": 71,
-        "mj": true
-    },
-    {
-        "dateString": "Mon Apr 04 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Tue Apr 05 2022",
-        "moodRank": 57
-    },
-    {
-        "dateString": "Wed Apr 06 2022",
-        "moodRank": 71,
-        "mj": true
-    },
-    {
-        "dateString": "Thu Apr 07 2022",
-        "moodRank": 57,
-        "mj": true
-    },
-    {
-        "dateString": "Fri Apr 08 2022",
-        "moodRank": 57,
-        "mj": true
-    },
-    {
-        "dateString": "Sat Apr 09 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Sun Apr 10 2022",
-        "moodRank": 43,
-        "mj": true
-    },
-    {
-        "dateString": "Mon Apr 11 2022",
-        "moodRank": 71
-    },
-    {
-        "dateString": "Tue Apr 12 2022",
-        "moodRank": 71,
-    },
-    {
-        "dateString": "Tue Apr 13 2022",
-        "moodRank": 57,
-        "mj": true
-    },
-]);
+  const [dateDataRaw, setDateData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const data = await db.getData();
+      setDateData(data);
+      setLoading(false);
+    })();
+  }, []);
   const [range, setRange] = useState(0);
   const [weed, setWeed] = useState(false);
   const dateData = [
@@ -136,12 +40,19 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={reduce_cn({
+        "App": true,
+        "loading": loading
+      })}>
       <Calendar tileContent={getBackground} className="Calendar" onChange={setDate} value={date} />
       <textarea></textarea>
       <input type="range" value={range} onChange={e => setRange(e.target.value)} /> <br />
       <div style={{display: "flex", justifyContent: "space-between", padding: "1rem"}}>
-        <div className={weed ? "mj-check checked" : "mj-check"} onClick={() => setWeed(!weed)}></div>
+        <div className={reduce_cn({
+            "mj-check": true,
+            "checked": weed
+          })}
+          onClick={() => setWeed(!weed)}></div>
         <button style={{fontSize: "1.5rem", padding: "0.3rem 1rem"}}> save </button>
       </div>
     </div>

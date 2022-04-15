@@ -2,6 +2,20 @@
   box-sizing: border-box;
 }
 
+.App.loading::after {
+  content: "";
+  --size: 6rem;
+  width: var(--size);
+  height: var(--size);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("./imgs/loading.gif");
+  background-size: cover;
+  background-position: center;
+}
+
 .App textarea {
   display: block;
   width: 100%;
