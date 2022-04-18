@@ -109,14 +109,21 @@ const defaultData = [
   },
 ];
 
-class DBHandler {
+class FBHandler {
   constructor() {
 
   }
+  wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
   async getData() {
-    await new Promise(r => setTimeout(r, Math.floor(Math.random()*5e3)));
+    await this.wait(2000);
     return defaultData;
+  }
+  async checkAuth(auth) {
+    await this.wait(1000);
+    return auth
   }
 }
 
-export default DBHandler;
+export default FBHandler;

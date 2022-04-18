@@ -16,6 +16,23 @@
   background-position: center;
 }
 
+.App {
+  max-width: 800px;
+  margin: auto;
+}
+
+.App.SignIn {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.App.SignIn > div {
+  display: flex;
+  flex-direction: column;
+}
+
 .App textarea {
   display: block;
   width: 100%;

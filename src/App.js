@@ -1,20 +1,39 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import DBHandler from "./DBHandler.js";
+import FBHandler from "./FBHandler.js";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const db = new DBHandler();
+const fb = new FBHandler();
 const reduce_cn = obj => Object.entries(obj).filter(([key, val]) => val).map(([key]) => key).join(" ");
 
 function App() {
+  const [auth, setAuth] = useState(null);
+  useEffect(function() {
+    fb.checkAuth(auth).then(r => setAuth(r));
+  }, []);
+
+
+  return (
+    <div className={reduce_cn({
+          App: true,
+          SignIn: !auth
+    })}>
+      {
+        auth ? <MoodApp {...{auth}} /> : <SignIn {...{setAuth}} />
+      }
+    </div>
+  );
+}
+
+function MoodApp(props) {
   const [date, setDate] = useState(new Date());
   const [dateDataRaw, setDateData] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const data = await db.getData();
+      const data = await fb.getData();
       setDateData(data);
       setLoading(false);
     })();
@@ -29,7 +48,6 @@ function App() {
       mj: weed
     }
   ];
-
   function getBackground({date, view}) {
       if (view !== 'month') return null;
       const dateStr = date.toDateString();
@@ -38,7 +56,6 @@ function App() {
       const {moodRank, mj} = data;
       return <UnderneathTile mood={moodRank / 100} mj={mj} />
   }
-
   return (
     <div className={reduce_cn({
         "App": true,
@@ -54,6 +71,20 @@ function App() {
           })}
           onClick={() => setWeed(!weed)}></div>
         <button style={{fontSize: "1.5rem", padding: "0.3rem 1rem"}}> save </button>
+      </div>
+    </div>
+  );
+}
+
+function SignIn(props) {
+  const [signUp, setSignUp] = useState(false);
+  return (
+    <div>
+      <input type="text" placeholder="email" />
+      <input type="text" placeholder="password" />
+      <div style={{display: "flex", justifyContent: "space-around"}}>
+        <button>{signUp ? "Sign Up!" : "Sign In!"}</button>
+        <div onClick={() => setSignUp(!signUp)}>{signUp ? "Old?" : "New?"}</div>
       </div>
     </div>
   );
