@@ -8,19 +8,19 @@ const fb = new FBHandler();
 const reduce_cn = obj => Object.entries(obj).filter(([key, val]) => val).map(([key]) => key).join(" ");
 
 function App() {
-  const [auth, setAuth] = useState(null);
-  useEffect(function() {
-    fb.checkAuth(auth).then(r => setAuth(r));
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fb.checkUser(user).then(r => setUser(r));
   }, []);
 
 
   return (
     <div className={reduce_cn({
           App: true,
-          SignIn: !auth
+          SignIn: !user
     })}>
       {
-        auth ? <MoodApp {...{auth}} /> : <SignIn {...{setAuth}} />
+        user ? <MoodApp {...{user}} /> : <SignIn {...{setUser}} />
       }
     </div>
   );
@@ -38,7 +38,7 @@ function MoodApp(props) {
       setLoading(false);
     })();
   }, []);
-  const [range, setRange] = useState(0);
+  const [range, setRange] = useState(50);
   const [weed, setWeed] = useState(false);
   const dateData = [
     ...dateDataRaw,
@@ -77,15 +77,14 @@ function MoodApp(props) {
 }
 
 function SignIn(props) {
-  const [signUp, setSignUp] = useState(false);
+  const {setUser} = props;
+  async function clicky() {
+    const user = await fb.googleSignUp();
+    setUser(user);
+  }
   return (
     <div>
-      <input type="text" placeholder="email" />
-      <input type="text" placeholder="password" />
-      <div style={{display: "flex", justifyContent: "space-around"}}>
-        <button>{signUp ? "Sign Up!" : "Sign In!"}</button>
-        <div onClick={() => setSignUp(!signUp)}>{signUp ? "Old?" : "New?"}</div>
-      </div>
+      <button onClick={clicky}>Sign in with Google!</button>
     </div>
   );
 }

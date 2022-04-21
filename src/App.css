@@ -33,6 +33,13 @@
   flex-direction: column;
 }
 
+.App.SignIn button {
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
 .App textarea {
   display: block;
   width: 100%;
