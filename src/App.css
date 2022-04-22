@@ -29,15 +29,28 @@
 }
 
 .App.SignIn > div {
+  --c: #a1eda4;
   display: flex;
   flex-direction: column;
-}
-
-.App.SignIn button {
-  padding: 1rem 2rem;
+  padding: 3rem;
+  border: 1rem solid var(--c);
   border-radius: 10px;
   font-size: 2rem;
+  font-weight: bold;
   cursor: pointer;
+  background-image: url("./imgs/google_logo.svg");
+  background-size: contain;
+
+  transition: 0.1s;
+  background-color: var(--c);
+  box-shadow: 0 0 0 0 pink;
+}
+
+.App.SignIn > div:hover {
+  box-shadow: 0 0 8px 2px #a1eda4;
+  background-color: #6ded6f;
+  border-color: #6ded6f;
+  transform: scale(1.05);
 }
 
 .App textarea {
@@ -103,4 +116,11 @@
   background-color: #1087ff;
   background-color: red;
   inset: unset;
+}
+
+.App .react-calendar__tile--active:enabled:hover,
+.App .react-calendar__tile--active,
+.App .react-calendar__tile--active:enabled:focus {
+  color: black;
+  border: 1px solid green;
 }

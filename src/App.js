@@ -27,13 +27,14 @@ function App() {
 }
 
 function MoodApp(props) {
+  const {user} = props;
   const [date, setDate] = useState(new Date());
   const [dateDataRaw, setDateData] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const data = await fb.getData();
+      const data = await fb.getData(user);
       setDateData(data);
       setLoading(false);
     })();
@@ -79,12 +80,12 @@ function MoodApp(props) {
 function SignIn(props) {
   const {setUser} = props;
   async function clicky() {
-    const user = await fb.googleSignUp();
+    const user = await fb.googleSignUp()
+      .catch(err => console.error(err));
     setUser(user);
   }
   return (
-    <div>
-      <button onClick={clicky}>Sign in with Google!</button>
+    <div onClick={clicky}>
     </div>
   );
 }

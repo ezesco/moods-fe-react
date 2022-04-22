@@ -137,11 +137,7 @@ class FBHandler {
   }
   async googleSignUp() {
     const auth = getAuth();
-    const result = await signInWithPopup(auth, provider)
-      .catch(err => {
-        const {code, message, email} = err;
-        const credential = GoogleAuthProvider.credentialFromError(err);
-      });
+    const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
     const user = result.user;
