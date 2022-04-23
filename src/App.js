@@ -29,6 +29,8 @@ function App() {
 function MoodApp(props) {
   const {user} = props;
   const [date, setDate] = useState(new Date());
+  const month = date.getMonth();
+  console.log(month);
   const [dateDataRaw, setDateData] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
