@@ -7,6 +7,9 @@
 
 # testing
 /coverage
+*~
+*.swp
+*.swo
 
 # production
 /build
