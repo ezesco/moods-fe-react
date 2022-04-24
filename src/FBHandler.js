@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from "firebase/analytics";
+import { doc, getFirestore } from "firebase/firestore";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyB5jv3nmqhcXzgl2W0_eJJX0-r9h6H5w04",
@@ -11,6 +12,7 @@ const firebaseConfig = {
   measurementId: "G-FEBB5NN3CJ"
 };
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 const defaultData = [
@@ -246,7 +248,9 @@ class FBHandler {
     //Testing
     return new Promise(r => setTimeout(r, ms));
   }
-  async getData() {
+  async getData(user, date) {
+    const {uid} = user;
+    
     await this.wait(2000);
     return defaultData;
   }
