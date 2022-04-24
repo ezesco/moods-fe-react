@@ -243,6 +243,7 @@ class FBHandler {
 
   }
   wait(ms) {
+    //Testing
     return new Promise(r => setTimeout(r, ms));
   }
   async getData() {
