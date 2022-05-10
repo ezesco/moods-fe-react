@@ -30,7 +30,6 @@ function MoodApp(props) {
   const {user} = props;
   const [date, setDate] = useState(new Date());
   const month = date.getMonth();
-  console.log(month);
   const [dateDataRaw, setDateData] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -57,7 +56,8 @@ function MoodApp(props) {
       const data = dateData.find(o => o.dateString == dateStr);
       if (data == undefined) return null;
       const {moodRank, mj} = data;
-      return <UnderneathTile mood={moodRank / 100} mj={mj} />
+      const mood = moodRank / 100;
+      return <UnderneathTile {...{mood, mj}} />
   }
   return (
     <div className={reduce_cn({
